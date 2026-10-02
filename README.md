@@ -1,50 +1,58 @@
-# User Management API
+# User Management — Android + .NET
 
-Backend REST para la aplicación Android de gestión de usuarios. Está desarrollado con ASP.NET Core 8, Entity Framework Core y MySQL/MariaDB.
+Copia completa del proyecto de gestión de usuarios. Este repositorio contiene la aplicación móvil Android y la API que utiliza para almacenar y consultar usuarios.
 
-## Requisitos
+## Estructura
 
-- SDK de .NET 8
-- MySQL o MariaDB en el puerto 3306
-- En este equipo se utiliza MariaDB incluido con XAMPP
+```text
+UserManagement-Android-DotNet/
+├── frontend-android/   Aplicación Android en Kotlin
+└── backend-dotnet/     API REST en ASP.NET Core 8
+```
 
-## Configuración local
+## Tecnologías
 
-La conexión a la base de datos se guarda mediante secretos de usuario y no se sube a GitHub.
+### Frontend
+
+- Kotlin
+- Android Studio
+- Retrofit y Gson
+- Vistas XML
+
+### Backend
+
+- ASP.NET Core 8
+- Entity Framework Core
+- MariaDB/MySQL
+- BCrypt
+- Swagger
+
+## Ejecutar el backend
+
+1. Iniciar MySQL desde XAMPP.
+2. Abrir una terminal en `backend-dotnet`.
+3. Configurar la conexión local la primera vez:
 
 ```powershell
 dotnet user-secrets set "ConnectionStrings:MySql" "server=localhost;port=3306;database=user_management;user=root;password="
 ```
 
-Si el usuario `root` tiene contraseña, debe escribirse después de `password=`.
-
-## Ejecutar
-
-1. Iniciar MySQL desde XAMPP.
-2. Abrir una terminal en la carpeta del proyecto.
-3. Ejecutar:
+4. Ejecutar la API:
 
 ```powershell
 dotnet restore
 dotnet run
 ```
 
-Durante el arranque en modo Development se aplican automáticamente las migraciones pendientes. La documentación interactiva queda disponible en:
+Swagger queda disponible en `http://localhost:62129/swagger`.
 
-- `http://localhost:62129/swagger`
-- `https://localhost:62128/swagger`
+## Ejecutar la aplicación Android
 
-El emulador Android debe usar `http://10.0.2.2:62129/`, que ya está configurado en el proyecto móvil.
+1. Abrir `frontend-android` con Android Studio.
+2. Esperar la sincronización de Gradle.
+3. Iniciar primero el backend.
+4. Ejecutar la aplicación en el emulador.
 
-## Endpoints
+El frontend ya apunta a `http://10.0.2.2:62129/`, que representa el computador anfitrión desde el emulador Android.
 
-| Método | Endpoint | Descripción |
-|---|---|---|
-| GET | `/api/Usuarios` | Consultar usuarios |
-| GET | `/api/Usuarios/{id}` | Consultar un usuario |
-| POST | `/api/Usuarios` | Crear un usuario |
-| POST | `/api/Usuarios/login` | Iniciar sesión |
-| PUT | `/api/Usuarios/{id}` | Actualizar un usuario |
-| DELETE | `/api/Usuarios/{id}` | Eliminar un usuario |
-
-Las contraseñas se almacenan como hashes BCrypt; nunca se devuelven en las respuestas de la API.
+Consulta las instrucciones específicas en los README de cada componente.

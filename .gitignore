@@ -8,10 +8,23 @@ artifacts/
 ## IDE and user files
 .vs/
 .vscode/
+.idea/
+**/.idea/
+*.iml
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
+
+## Android and Gradle
+.gradle/
+**/.gradle/
+**/build/
+local.properties
+**/local.properties
+captures/
+.externalNativeBuild/
+.cxx/
 
 ## Test and coverage results
 TestResults/
