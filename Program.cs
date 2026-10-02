@@ -9,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var connectionString =
-    builder.Configuration.GetConnectionString("MySql");
+    builder.Configuration.GetConnectionString("MySql")
+    ?? throw new InvalidOperationException(
+        "No se encontró la cadena de conexión 'MySql'."
+    );
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
@@ -27,6 +30,12 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>();
+
+    await dbContext.Database.MigrateAsync();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }

@@ -1,77 +1,50 @@
-# 📱 User Management Mobile App
+# User Management API
 
-Aplicación móvil desarrollada con Kotlin para Android que consume una
-API REST desarrollada con ASP.NET Core y utiliza MySQL como sistema
-de persistencia.
+Backend REST para la aplicación Android de gestión de usuarios. Está desarrollado con ASP.NET Core 8, Entity Framework Core y MySQL/MariaDB.
 
-## 🚀 Tecnologías
+## Requisitos
 
-### Mobile
-- Kotlin
-- Android Studio
-- Retrofit
-- Gson
-- XML Layouts
+- SDK de .NET 8
+- MySQL o MariaDB en el puerto 3306
+- En este equipo se utiliza MariaDB incluido con XAMPP
 
-### Backend
-- C#
-- ASP.NET Core Web API
-- Entity Framework Core
-- BCrypt
-- Repository Pattern
+## Configuración local
 
-### Database
-- MySQL
+La conexión a la base de datos se guarda mediante secretos de usuario y no se sube a GitHub.
 
-## 🏗️ Arquitectura
+```powershell
+dotnet user-secrets set "ConnectionStrings:MySql" "server=localhost;port=3306;database=user_management;user=root;password="
+```
 
-Android App
-    ↓
-Retrofit
-    ↓
-ASP.NET Core REST API
-    ↓
-Controller
-    ↓
-Service
-    ↓
-Repository
-    ↓
-Entity Framework Core
-    ↓
-MySQL
+Si el usuario `root` tiene contraseña, debe escribirse después de `password=`.
 
-## 🔐 Autenticación
+## Ejecutar
 
-Las contraseñas no se almacenan en texto plano.
+1. Iniciar MySQL desde XAMPP.
+2. Abrir una terminal en la carpeta del proyecto.
+3. Ejecutar:
 
-Durante el registro:
+```powershell
+dotnet restore
+dotnet run
+```
 
-Password → BCrypt Hash → MySQL
+Durante el arranque en modo Development se aplican automáticamente las migraciones pendientes. La documentación interactiva queda disponible en:
 
-Durante el login:
+- `http://localhost:62129/swagger`
+- `https://localhost:62128/swagger`
 
-Password → BCrypt Verify → PasswordHash
+El emulador Android debe usar `http://10.0.2.2:62129/`, que ya está configurado en el proyecto móvil.
 
-## 📌 Funcionalidades
-
-- Registro de usuarios
-- Inicio de sesión
-- Validación de credenciales
-- Hash seguro de contraseñas
-- Consulta de usuarios
-- Actualización de usuarios
-- Eliminación de usuarios
-- Manejo de roles
-- Consumo de API REST desde Android
-
-## 🔗 Endpoints
+## Endpoints
 
 | Método | Endpoint | Descripción |
 |---|---|---|
-| GET | /api/Usuarios | Consultar usuarios |
-| GET | /api/Usuarios/{id} | Consultar usuario |
-| POST | /api/Usuarios | Crear usuario |
-| POST | /api/Usuarios/login | Iniciar sesión |
-| PUT | /api/Usuarios/{id} | Actualizar usuario |
-| DELETE | /api/Usuarios/{id} | Eliminar usuario |
+| GET | `/api/Usuarios` | Consultar usuarios |
+| GET | `/api/Usuarios/{id}` | Consultar un usuario |
+| POST | `/api/Usuarios` | Crear un usuario |
+| POST | `/api/Usuarios/login` | Iniciar sesión |
+| PUT | `/api/Usuarios/{id}` | Actualizar un usuario |
+| DELETE | `/api/Usuarios/{id}` | Eliminar un usuario |
+
+Las contraseñas se almacenan como hashes BCrypt; nunca se devuelven en las respuestas de la API.

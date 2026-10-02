@@ -1,27 +1,31 @@
-# Visual Studio
-.vs/
-**/.vs/
-
-# .NET
+## .NET build results
 bin/
 obj/
 **/bin/
 **/obj/
+artifacts/
 
-# Visual Studio user files
+## IDE and user files
+.vs/
+.vscode/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Logs
-*.log
+## Test and coverage results
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
 
-# Configuración local
-appsettings.Development.json
+## Local environment and secrets
 .env
 .env.*
+appsettings.Development.json
+appsettings.Local.json
 
-# Sistema
+## Logs and operating-system files
+*.log
 .DS_Store
 Thumbs.db
