@@ -1,3 +1,4 @@
+// esto comprende la estructura que se va a almacenar en base de datos
 namespace UsuariosApi.Entities;
 
 public class Usuario
@@ -10,14 +11,16 @@ public class Usuario
 
     public string Correo { get; set; } = string.Empty;
 
-    // La contraseña NO se guarda en texto plano
+    // La contraseña se guarda encriptada mediante hash
     public string PasswordHash { get; set; } = string.Empty;
 
-    public int Edad { get; set; }
+    public DateTime FechaNacimiento { get; set; }
+
+    public string Universidad { get; set; } = string.Empty;
+
+    public int Semestre { get; set; }
 
     public bool Activo { get; set; } = true;
-
-    public int RolId { get; set; }
 
     public DateTime FechaCreacion { get; set; } = DateTime.Now;
 }

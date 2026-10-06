@@ -35,6 +35,20 @@ public class ApplicationDbContext : DbContext
 
             e.HasIndex(x => x.Correo)
                 .IsUnique();
+
+            e.Property(x => x.PasswordHash)
+                .IsRequired();
+
+            e.Property(x => x.FechaNacimiento)
+                .HasColumnType("date")
+                .IsRequired();
+
+            e.Property(x => x.Universidad)
+                .HasMaxLength(150)
+                .IsRequired();
+
+            e.Property(x => x.Semestre)
+                .IsRequired();
         });
     }
 }

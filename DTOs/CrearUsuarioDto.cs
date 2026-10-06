@@ -1,3 +1,4 @@
+// reglas que indican que se va a almacenar o envíar
 using System.ComponentModel.DataAnnotations;
 
 namespace UsuariosApi.DTOs;
@@ -16,9 +17,13 @@ public class CrearUsuarioDto
     [Required, MinLength(6)]
     public string Password { get; set; } = string.Empty;
 
-    [Range(1, 120)]
-    public int Edad { get; set; }
+    [Required]
+    [DataType(DataType.Date)]
+    public DateTime FechaNacimiento { get; set; }
 
-    [Range(1, int.MaxValue)]
-    public int RolId { get; set; }
+    [Required, MaxLength(150)]
+    public string Universidad { get; set; } = string.Empty;
+
+    [Range(1, 10)]
+    public int Semestre { get; set; }
 }

@@ -42,6 +42,8 @@ public class UsuarioService : IUsuarioService
     // ==========================================
     public async Task<UsuarioDto> CrearAsync(CrearUsuarioDto d)
     {
+        ValidarFechaNacimiento(d.FechaNacimiento);
+
         var correo = d.Correo
             .Trim()
             .ToLowerInvariant();
@@ -64,8 +66,9 @@ public class UsuarioService : IUsuarioService
             Apellido = d.Apellido.Trim(),
             Correo = correo,
             PasswordHash = passwordHash,
-            Edad = d.Edad,
-            RolId = d.RolId
+            FechaNacimiento = d.FechaNacimiento.Date,
+            Universidad = d.Universidad.Trim(),
+            Semestre = d.Semestre
         };
 
         await _repo.CrearAsync(usuario);
@@ -129,6 +132,8 @@ public class UsuarioService : IUsuarioService
         int id,
         ActualizarUsuarioDto d)
     {
+        ValidarFechaNacimiento(d.FechaNacimiento);
+
         var usuario =
             await _repo.ObtenerPorIdAsync(id);
 
@@ -155,9 +160,10 @@ public class UsuarioService : IUsuarioService
         usuario.Nombre = d.Nombre.Trim();
         usuario.Apellido = d.Apellido.Trim();
         usuario.Correo = correo;
-        usuario.Edad = d.Edad;
+        usuario.FechaNacimiento = d.FechaNacimiento.Date;
+        usuario.Universidad = d.Universidad.Trim();
+        usuario.Semestre = d.Semestre;
         usuario.Activo = d.Activo;
-
         await _repo.ActualizarAsync(usuario);
 
         return true;
@@ -192,9 +198,37 @@ public class UsuarioService : IUsuarioService
             Nombre = u.Nombre,
             Apellido = u.Apellido,
             Correo = u.Correo,
-            Edad = u.Edad,
+            FechaNacimiento = u.FechaNacimiento,
+            Edad = CalcularEdad(u.FechaNacimiento),
+            Universidad = u.Universidad,
+            Semestre = u.Semestre,
             Activo = u.Activo,
             FechaCreacion = u.FechaCreacion
         };
+    }
+
+    private static int CalcularEdad(DateTime fechaNacimiento)
+    {
+        var hoy = DateTime.Today;
+        var edad = hoy.Year - fechaNacimiento.Year;
+
+        if (fechaNacimiento.Date > hoy.AddYears(-edad))
+        {
+            edad--;
+        }
+
+        return edad;
+    }
+
+    private static void ValidarFechaNacimiento(
+        DateTime fechaNacimiento)
+    {
+        if (fechaNacimiento == default ||
+            fechaNacimiento.Date > DateTime.Today)
+        {
+            throw new InvalidOperationException(
+                "La fecha de nacimiento no es válida."
+            );
+        }
     }
 }
